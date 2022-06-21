@@ -9,10 +9,11 @@
 int main()
 {
 	int sock = 0;
-	char msg[] = "hello server";
+	char msg[] = "hello client";
 	char buf[64] = {0};
 	struct sockaddr_in my_addr, clnt_adr;
 	socklen_t clnt_adr_sz;	
+	int n = 0;
 	
 	
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -21,17 +22,22 @@ int main()
 		printf("socket failed!\n");
 		return -1;
 	}
+	
+	memset(&my_addr, 0, sizeof(my_addr));
 	my_addr.sin_family = AF_INET;
 	my_addr.sin_port = htons(MYPORT);
-	my_addr.sin_addr.s_addr = INADDR_ANY;
+	my_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	
-	if (-1 == bind( sock, (struct sockaddr *) &my_addr, sizeof(struct sockaddr)))
+	if (-1 == bind( sock, (struct sockaddr *) &my_addr, sizeof(my_addr)))
 	{
 		printf("bind failed!\n");
 		return -1;
 	}
 	
-	recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
+	n = recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
+	printf("客户端请求:%s\n", buf);
+	
 	sendto(sock, msg, strlen(msg), 0, (struct sockaddr*)&clnt_adr, clnt_adr_sz);
+	
 	return 0;
 }
