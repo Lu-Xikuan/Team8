@@ -19,3 +19,4 @@ int main()
 	sendto(sock, msg, strlen(msg), 0, &addr, addr_len);
 	
 	return 0;
+}
