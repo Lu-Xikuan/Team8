@@ -18,8 +18,8 @@ int main()
 	struct sockaddr_in stRemoteAddr = { 0 }; //对方地址信息
 	socklen_t socklen = 0;
 
-	iSocketFD = socket(AF_INET, SOCK_STREAM, 0); //建立socket
-	if (0 > iSocketFD)
+	sockfd = socket(AF_INET, SOCK_STREAM, 0); //建立socket
+	if (0 > sockfd)
 	{
 		printf("创建socket失败！\n");
 		return 0;
@@ -30,22 +30,22 @@ int main()
 	stLocalAddr.sin_addr.s_addr = htonl(INADDR_ANY); /*IP，括号内容表示本机IP*/
 
 	//绑定地址结构体和socket
-	if (0 > bind(iSocketFD, (void*)&stLocalAddr, sizeof(stLocalAddr)))
+	if (0 > bind(sockfd, (void*)&stLocalAddr, sizeof(stLocalAddr)))
 	{
 		printf("绑定失败！\n");
 		return 0;
 	}
 
 	//开启监听 ，第二个参数是最大监听数
-	if (0 > listen(iSocketFD, BACKLOG))
+	if (0 > listen(sockfd, BACKLOG))
 	{
 		printf("监听失败！\n");
 		return 0;
 	}
 
-	printf("iSocketFD: %d\n", iSocketFD);
+	printf("sockfd: %d\n", sockfd);
 	//在这里阻塞知道接收到消息，参数分别是socket句柄，接收到的地址信息以及大小 
-	new_fd = accept(iSocketFD, (void*)&stRemoteAddr, &socklen);
+	new_fd = accept(sockfd, (void*)&stRemoteAddr, &socklen);
 	if (0 > new_fd)
 	{
 		printf("接收失败！\n");
@@ -58,8 +58,8 @@ int main()
 	}
 
 	printf("new_fd: %d\n", new_fd);
-	iRecvLen = recv(new_fd, buf, sizeof(buf), 0);
-	if (0 >= iRecvLen)    //对端关闭连接 返回0
+	recvlen = recv(new_fd, buf, sizeof(buf), 0);
+	if (0 >= recvlen)    //对端关闭连接 返回0
 	{
 		printf("接收失败或者对端关闭连接！\n");
 	}
@@ -68,7 +68,7 @@ int main()
 	}
 
 	close(new_fd);
-	close(iSocketFD);
+	close(sockfd);
 
 	return 0;
-
+}

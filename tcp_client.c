@@ -38,7 +38,7 @@ int main()
 	}
 	else {
 		printf("连接成功！\n");
-		recv(iSocketFD, buf, sizeof(buf), 0); 将接收数据打入buf，参数分别是句柄，储存处，最大长度，其他信息（设为0即可）。
+		recv(iSocketFD, buf, sizeof(buf), 0); 
 			printf("Received:%s\n", buf);
 	}
 
