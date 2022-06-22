@@ -13,7 +13,7 @@ int main()
 {
 	int sockfd = 0, recvlen = 0, new_fd = 0;
 	char buf[64] = { 0 };
-	char msg[] = "hello client";
+	char msg[] = "Hello Client";
 	struct sockaddr_in stLocalAddr = { 0 }; //本地地址信息结构图，下面有具体的属性赋值
 	struct sockaddr_in stRemoteAddr = { 0 }; //对方地址信息
 	socklen_t socklen = 0;
